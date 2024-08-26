@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=" https://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <div class="container card-sh" style="margin-top: 70px;margin-bottom: 100px">
+
+        <div class="col-md-12 p-5">
+            <div class="row">
+                <div class="col-md-6 text-end">
+                    <img alt="" th:src="@{'/img/product_img/'+${productId.image}}" width="330px"
+                         height="400px">
+                    <th:block th:if="${session.success}">
+                        <p class="text-success alert alert-success text-center" role="alert">[[${session.success}]]</p>
+                        <th:block th:text="${@commnServiceImpl.removesessionMessage()}"></th:block>
+                    </th:block>
+
+                    <th:block th:if="${session.errorMsg}">
+                        <p class="text-danger text-center  alert alert-danger">[[${session.errorMsg}]]</p>
+                        <th:block th:text="${@commnServiceImpl.removesessionMessage()}"></th:block>
+
+                    </th:block>
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <p class="fs-3">[[${productId.title}]]</p>
+                    <p>
+                        <span class="fw-bold">Mô tả : </span><br>[[${productId.description}]]
+                    </p>
+                    <p>
+                        <span class="fw-bold"> Chi tiết sản phẩm: </span> <br>Trạng thái :
+
+                        <th:block th:if="${productId.stock>0}">
+                            <span class="badge bg-success">Còn hàng</span>
+                        </th:block>
+                        <th:block th:unless="${productId.stock>0}">
+                            <span class="badge bg-warning">Hết hàng</span>
+                        </th:block> <br> Danh mục:
+                        [[${productId.category}]]<br> Policy : 7 Days Replacement & Return
+
+                    </p>
+                    <p class="fs-5 fw-bold">
+                        Giá :&nbsp; &nbsp; &nbsp; &nbsp;<i class="fas fa-rupee-sign"></i>
+                        [[${productId.discountPrice}]] <span
+                            class="fs-6 text-decoration-line-through text-secondary">[[${productId.price}]]</span>
+                        <span class="fs-6  text-success">[[${productId.discount}]]% off</span>
+                    </p>
+
+<!--                    <div class="row">-->
+<!--                        <div class="col-md-4 text-success text-center p-2">-->
+<!--                            <i class="fas fa-money-bill-wave fa-2x"></i>-->
+<!--                            <p>Cash On Delivery</p>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-4 text-danger text-center p-2">-->
+<!--                            <i class="fas fa-undo-alt fa-2x"></i>-->
+<!--                            <p>Return Available</p>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-4 text-primary text-center p-2">-->
+<!--                            <i class="fas fa-truck-moving fa-2x"></i>-->
+<!--                            <p>Free Shipping</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                    <th:block th:if="${productId.stock>0}">
+                        <th:block th:if="${user==null}">
+                            <a href="/signin" class="btn btn-danger col-md-12">Add To
+                                Cart</a>
+                        </th:block>
+
+                        <th:block th:unless="${user==null}">
+                            <a
+                          th:href="@{'/user/addCart?pid='+${productId.id}+'&uid='+${user.id}}"
+                                    class="btn btn-danger col-md-12">Add To Cart</a>
+                        </th:block>
+                    </th:block>
+                    <th:block th:unless="${productId.stock>0}">
+                        <a href="#" class="btn text-white btn-warning col-md-12">Hết hàng</a>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+</body>
+</html>
